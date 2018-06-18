@@ -3,8 +3,12 @@ package test;
 import main.Sjavac;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -13,6 +17,9 @@ public class SjavacTest {
     private Sjavac program;
     private Class sjavacClass;
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Before
     public void initialize() {
         program = new Sjavac();
@@ -20,19 +27,30 @@ public class SjavacTest {
     }
 
     @Test
-    public void programShouldRunWithExactlyOneArgument() throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
+    public void throwsIllegalNumberOfArgumentsExceptionIfThereIsNotOneArgument() throws Throwable {
+
+        Class exClass = Class.forName("main.IllegalNumberOfArgumentsException");
+        exception.expect(exClass);
+
+        Field exMessage = exClass.getDeclaredField("message");
+        exMessage.setAccessible(true);
+//        Constructor constructor = exClass.getConstructor();
+        Constructor constructor = exClass.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        exception.expectMessage(exMessage.get(constructor.newInstance()).toString());
 
         Method checkArgs = sjavacClass.getDeclaredMethod("checkArgs", String[].class);
         checkArgs.setAccessible(true);
 
-        String trueMessage = "The program accepts exactly with one argument!";
-        String falseMessage = "The program should run with exactly one argument, but it accepted ";
+        String[] oneArg = { "firstArg"};
+        checkArgs.invoke(program, new Object[]{oneArg}); // should be fine
 
-        String[] oneArg = { "firstArg" };
-        Assert.assertTrue(trueMessage, (boolean)checkArgs.invoke(program, new Object[]{oneArg}));
-
-        String[] twoArgs = { "firstArg", "secArg" };
-        Assert.assertFalse(falseMessage + "2 arguments", (boolean)checkArgs.invoke(program, new Object[]{twoArgs}));
+        String[] twoArg = { "firstArg", "secArg"};
+        try {
+            checkArgs.invoke(program, new Object[]{twoArg});
+        }
+        catch (InvocationTargetException ite) {
+            throw ite.getCause();
+        }
     }
 }

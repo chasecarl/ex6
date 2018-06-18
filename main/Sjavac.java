@@ -11,7 +11,6 @@ public class Sjavac {
         }
     }
 
-    // TODO: SHOULD WE USE AN EXCEPTION INSTEAD?
     private static void checkArgs(String[] args) throws IllegalNumberOfArgumentsException {
         if (!(args.length == NUMBER_OF_ARGUMENTS)) throw new IllegalNumberOfArgumentsException();
     }
