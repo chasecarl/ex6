@@ -34,8 +34,7 @@ public class SjavacTest {
 
         Field exMessage = exClass.getDeclaredField("message");
         exMessage.setAccessible(true);
-//        Constructor constructor = exClass.getConstructor();
-        Constructor constructor = exClass.getDeclaredConstructors()[0];
+        Constructor constructor = exClass.getDeclaredConstructor();
         constructor.setAccessible(true);
         exception.expectMessage(exMessage.get(constructor.newInstance()).toString());
 
@@ -49,6 +48,7 @@ public class SjavacTest {
         try {
             checkArgs.invoke(program, new Object[]{twoArg});
         }
+        // TODO: REFLECTION MECHANISM WRAPS ALL EXCEPTIONS THROWN WITH InvocationTargetException (there is nothing to do)
         catch (InvocationTargetException ite) {
             throw ite.getCause();
         }
