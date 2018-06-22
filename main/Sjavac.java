@@ -12,13 +12,16 @@ public class Sjavac {
     /** Stores number of arguments that program accepts */
     private static final int NUMBER_OF_ARGUMENTS = 1;
 
+    /** Represents a code for an io error */
+    private static final int IO_ERROR_CODE = 2;
+
     public static void main(String[] args) {
         try {
             checkArgs(args);
             Parser parser = Parser.getInstance();
             String currentPath = new File("").getAbsolutePath();
             String filePath = currentPath.concat(args[0]);
-            System.out.println(filePath);
+//            System.out.println(filePath);
             ArrayList<Line> lines = parser.parseFile(filePath);
             for (Line line : lines) {
                 System.out.println(line.getContent());
@@ -29,7 +32,7 @@ public class Sjavac {
             return;
         }
         catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
+            System.out.println(IO_ERROR_CODE);
             return;
         }
     }
