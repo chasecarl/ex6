@@ -3,7 +3,7 @@ package line;
 import java.util.regex.Matcher;
 
 /**
- * Singleton Factory class that creates different types of Line objects
+ * Factory class that creates different types of Line objects
  */
 public class LineFactory {
 
@@ -26,15 +26,17 @@ public class LineFactory {
      * @param fileString a string to create from
      * @return a new Line object of a given String
      */
-    public static Line createLine(String fileString) {
+    public Line createLine(String fileString) {
         Matcher empty = Pattern.EMPTY.pattern.matcher(fileString);
-        if (empty.matches()) return new EmptyLine();
-        return null;
+        if (empty.matches()) return new EmptyLine(fileString);
+        return new CodeLine(fileString);
     }
 
-    private LineFactory() {
+    /** A private constructor */
+    private LineFactory() {}
 
-    }
-
-    public static LineFactory instance() { return instance; }
+    /**
+     * @return an instance of a class
+     */
+    public static LineFactory getInstance() { return instance; }
 }
