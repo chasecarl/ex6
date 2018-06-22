@@ -3,22 +3,12 @@ package line;
 /**
  * Represents a line that has code instructions
  */
-public class CodeLine implements Line {
-
-    /** Stores a content of a Line */
-    private String content;
+public class CodeLine extends AbstractLine {
 
     /**
-     * Constructs an empty line from a string
+     * Constructs a code line from a string
      * @param content a string from which to construct
      */
-    CodeLine(String content) {
-        this.content = content;
-    }
+    CodeLine(String content) { super(content); }
 
-    /**
-     * @return a content of a line
-     */
-    @Override
-    public String getContent() { return content; }
 }
