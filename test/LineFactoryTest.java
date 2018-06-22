@@ -53,5 +53,9 @@ public class LineFactoryTest {
 
         String notACom = "\\ heyyyyy \\";
         Assert.assertFalse("Not a comment", instance.createLine(notACom) instanceof CommentLine);
+
+        String notStartCom = "some shit \\\\";
+        Assert.assertFalse("Slashes must appear at the start of the line",
+                instance.createLine(notStartCom) instanceof CommentLine);
     }
 }
