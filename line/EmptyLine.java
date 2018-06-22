@@ -1,6 +1,6 @@
 package line;
 
-class EmptyLine extends AbstractLine {
+public class EmptyLine extends AbstractLine {
 
     /**
      * Constructs an empty line from a string

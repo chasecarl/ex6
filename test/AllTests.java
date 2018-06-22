@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        SjavacTest.class
+        SjavacTest.class,
+        LineFactoryTest.class
 })
 public class AllTests {
 }

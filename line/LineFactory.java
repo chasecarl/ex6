@@ -12,7 +12,7 @@ public class LineFactory {
 
     /** Stores all available patterns */
     private enum Pattern {
-        EMPTY ("\\s+"),
+        EMPTY ("\\s*"),
         COMMENT ("^\\\\\\\\.*"); // do we need to add .* at the end?
 
         private final java.util.regex.Pattern pattern;
