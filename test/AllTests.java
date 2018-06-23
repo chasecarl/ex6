@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         SjavacTest.class,
         LineFactoryTest.class
+        // put other test classes here
 })
 public class AllTests {
 }
