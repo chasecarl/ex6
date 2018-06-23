@@ -12,6 +12,12 @@ public class Sjavac {
     /** Stores number of arguments that program accepts */
     private static final int NUMBER_OF_ARGUMENTS = 1;
 
+    /** Represents a code that means that program passed the verification */
+    private static final int PASS_CODE = 0;
+
+    /** Represents a code that means that program failed the verification */
+    private static final int VERIFICATION_ERROR_CODE = 1;
+
     /** Represents a code for an io error */
     private static final int IO_ERROR_CODE = 2;
 
@@ -27,6 +33,7 @@ public class Sjavac {
                 System.out.println(line.getContent());
             }
         }
+        // TODO: REORGANIZE EXCEPTIONS
         catch (IllegalNumberOfArgumentsException inoae) {
             System.err.println(inoae.getMessage());
             return;
@@ -35,6 +42,7 @@ public class Sjavac {
             System.out.println(IO_ERROR_CODE);
             return;
         }
+        System.out.println(PASS_CODE);
     }
 
     /**
