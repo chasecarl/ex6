@@ -5,6 +5,8 @@ import variable.Type;
 import variable.Variable;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LineProcessor {
 
@@ -16,6 +18,8 @@ public class LineProcessor {
     private final String NAME = "\\D";
     private final String LEFT_ROUND_BRACKET = "(";
     private final String RIGHT_ROUND_BRACKET = ")";
+
+    private final Pattern type = Pattern.compile(getAllTypesForRegexp());
     
     /** A private constructor */
     private LineProcessor() {}
@@ -30,8 +34,11 @@ public class LineProcessor {
         String content = line.getContent();
         ArrayList<Variable> result = new ArrayList<>();
 
-        String regex = POSSESSIVE_SPACE + getAllTypesForRegexp() + POSSESSIVE_SPACE;
+//        String regex = POSSESSIVE_SPACE + getAllTypesForRegexp() + POSSESSIVE_SPACE;
 //        regex +=
+        String[] splitted = content.split(POSSESSIVE_SPACE);
+        
+
         return null;
     }
 
