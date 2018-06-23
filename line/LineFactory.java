@@ -13,7 +13,7 @@ public class LineFactory {
     /** Stores all available patterns */
     private enum Pattern {
         EMPTY ("\\s*"),
-        COMMENT ("^\\\\\\\\.*"); // do we need to add .* at the end?
+        COMMENT ("\\\\\\\\");
 
         private final java.util.regex.Pattern pattern;
 
@@ -31,7 +31,7 @@ public class LineFactory {
         Matcher empty = Pattern.EMPTY.pattern.matcher(fileString);
         if (empty.matches()) return new EmptyLine(fileString);
         Matcher comment = Pattern.COMMENT.pattern.matcher(fileString);
-        if (comment.matches()) return new CommentLine(fileString);
+        if (comment.lookingAt()) return new CommentLine(fileString);
         return new CodeLine(fileString);
     }
 

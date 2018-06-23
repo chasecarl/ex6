@@ -2,6 +2,7 @@ package main;
 
 import line.Line;
 import parser.Parser;
+import scope.Scope;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,10 +15,8 @@ public class Sjavac {
 
     /** Represents a code that means that program passed the verification */
     private static final int PASS_CODE = 0;
-
     /** Represents a code that means that program failed the verification */
     private static final int VERIFICATION_ERROR_CODE = 1;
-
     /** Represents a code for an io error */
     private static final int IO_ERROR_CODE = 2;
 
@@ -29,9 +28,11 @@ public class Sjavac {
             String filePath = currentPath.concat(args[0]);
 //            System.out.println(filePath);
             ArrayList<Line> lines = parser.parseFile(filePath);
-            for (Line line : lines) {
-                System.out.println(line.getContent());
-            }
+//            for (Line line : lines) {
+//                System.out.println(line.getContent());
+//            }
+            Scope main = new Scope(null);
+
         }
         // TODO: REORGANIZE EXCEPTIONS
         catch (IllegalNumberOfArgumentsException inoae) {
