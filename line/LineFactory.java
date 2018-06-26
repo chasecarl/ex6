@@ -12,28 +12,59 @@ public class LineFactory {
 
     /** Stores an instance of a class */
     private static LineFactory instance = new LineFactory();
-    /** Stores a string concatenation of stored words for all the data types that are supported by the program */
-    private static String dataTypesRegex;
 
     /** Represents all stored words for all data types that are supported by the program */
     private enum Type {
-        INTEGER { public String toString() { return "int"; }},
-        DOUBLE { public String toString() { return "double"; }},
-        STRING { public String toString() { return "String"; }},
-        BOOLEAN { public String toString() { return "boolean"; }},
-        CHAR { public String toString() { return "char"; }};
+        INTEGER {
+            public String toString() { return "int"; }
+            public String getTypeSpecifyDataRegex() { return "\\d++"; }
+        },
+        DOUBLE {
+            public String toString() { return "double"; }
+            public String getTypeSpecifyDataRegex() { return "\\d*+\\.d*+"; }
+        },
+        STRING {
+            public String toString() { return "String"; }
+            public String getTypeSpecifyDataRegex() { return "\".*+\""; }
+        },
+        BOOLEAN {
+            public String toString() { return "boolean"; }
+            // TODO: REMEMBER: IT ADDS A CAPTURING GROUP
+            public String getTypeSpecifyDataRegex() { return "(true|false|" + INTEGER.getTypeSpecifyDataRegex()
+                    + REGEX_DELIMITER + DOUBLE.getTypeSpecifyDataRegex() + ")"; }
+        },
+        CHAR {
+            public String toString() { return "char"; }
+            public String getTypeSpecifyDataRegex() { return "\'.?\'"; }
+        };
 
         public abstract String toString();
+        public abstract String getTypeSpecifyDataRegex();
     }
 
     /**
      * @return a String concatenation of stored words for all the data types that are supported by the program
      * (WITHOUT round brackets)
      */
-    private static String getAllTypesForRegex() {
+    private static String getAllDataTypesForRegex() {
         StringBuilder result = new StringBuilder();
         for (Type type : Type.values()) {
             result.append(type);
+            result.append(REGEX_DELIMITER);
+        }
+        result.deleteCharAt(result.length() - 1);
+        return result.toString();
+    }
+
+    /**
+     *
+     * @return a String concatenation of regexes where each regex corresponds to a certain data value format
+     * of an appropriate type (WITHOUT round brackets)
+     */
+    private static String getAllValueTypesForRegex() {
+        StringBuilder result = new StringBuilder();
+        for (Type type : Type.values()) {
+            result.append(type.getTypeSpecifyDataRegex());
             result.append(REGEX_DELIMITER);
         }
         result.deleteCharAt(result.length() - 1);
@@ -55,8 +86,8 @@ public class LineFactory {
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
          */
-        VARIABLE("\\s*+(final\\s++)?(" + dataTypesRegex +
-                ")\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+\\d++\\s*+)?;\\s*+");
+        VARIABLE("\\s*+(final\\s++)?(" + getAllDataTypesForRegex() +
+                ")\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesForRegex() +"\\s*+)?;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
@@ -79,19 +110,17 @@ public class LineFactory {
         if (var.matches()) {
             String type = var.group(2);
             if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(fileString); }
-            if (type.equals(Type.DOUBLE.toString())) { }
-            if (type.equals(Type.STRING.toString())) { }
-            if (type.equals(Type.BOOLEAN.toString())) { }
-            if (type.equals(Type.CHAR.toString())) { }
+            if (type.equals(Type.DOUBLE.toString())) { return new DoubleVariableLine(fileString); }
+            if (type.equals(Type.STRING.toString())) { return new StringVariableLine(fileString); }
+            if (type.equals(Type.BOOLEAN.toString())) { return new BooleanVariableLine(fileString); }
+            if (type.equals(Type.CHAR.toString())) { return new CharVariableLine(fileString); }
         }
         // TODO: THROW AN EXCEPTION
         return new CodeLine(fileString);
     }
 
     /** A private constructor */
-    private LineFactory() {
-        dataTypesRegex = getAllTypesForRegex();
-    }
+    private LineFactory() { }
 
     /**
      * @return an instance of a class
