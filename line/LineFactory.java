@@ -76,8 +76,15 @@ public class LineFactory {
         Matcher comment = Pattern.COMMENT.pattern.matcher(fileString);
         if (comment.lookingAt()) return new CommentLine(fileString);
         Matcher var = Pattern.VARIABLE.pattern.matcher(fileString);
-        // TODO: ADD A SWITCH CASE
-        if (var.matches()) return new IntegerVariableLine(fileString);
+        if (var.matches()) {
+            String type = var.group(2);
+            if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(fileString); }
+            if (type.equals(Type.DOUBLE.toString())) { }
+            if (type.equals(Type.STRING.toString())) { }
+            if (type.equals(Type.BOOLEAN.toString())) { }
+            if (type.equals(Type.CHAR.toString())) { }
+        }
+        // TODO: THROW AN EXCEPTION
         return new CodeLine(fileString);
     }
 
