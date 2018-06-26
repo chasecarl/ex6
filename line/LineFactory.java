@@ -10,6 +10,33 @@ public class LineFactory {
     /** Stores an instance of a class */
     private static LineFactory instance = new LineFactory();
 
+    /** Represents a delimiter that is used by the regular expressions */
+    private final static String REGEX_DELIMITER = "|";
+
+    /** Represents all stored words for all data types that are supported by the program */
+    private enum Type {
+        INTEGER { public String toString() { return "int"; }},
+        DOUBLE { public String toString() { return "double"; }},
+        STRING { public String toString() { return "String"; }},
+        BOOLEAN { public String toString() { return "boolean"; }},
+        CHAR { public String toString() { return "char"; }};
+
+        public abstract String toString();
+    }
+
+    /**
+     * @return a String concatenation of stored words for all the data types that are supported by the program
+     */
+    private static String getAllTypesForRegex() {
+        StringBuilder result = new StringBuilder();
+        for (Type type : Type.values()) {
+            result.append(type);
+            result.append(REGEX_DELIMITER);
+        }
+        result.deleteCharAt(result.length() - 1);
+        return result.toString();
+    }
+
     /** Stores all available patterns */
     private enum Pattern {
         EMPTY ("\\s*+"),
@@ -25,7 +52,8 @@ public class LineFactory {
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
          */
-        INTEGER_VAR("\\s*(final\\s++)?(int)\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+\\d++\\s*+)?;\\s*+");
+        VARIABLE("\\s*+(final\\s++)?(" + getAllTypesForRegex() +
+                ")\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+\\d++\\s*+)?;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
@@ -44,8 +72,9 @@ public class LineFactory {
         if (empty.matches()) return new EmptyLine(fileString);
         Matcher comment = Pattern.COMMENT.pattern.matcher(fileString);
         if (comment.lookingAt()) return new CommentLine(fileString);
-        Matcher intVar = Pattern.INTEGER_VAR.pattern.matcher(fileString);
-        if (intVar.matches()) return new IntegerVariableLine(fileString);
+        Matcher var = Pattern.VARIABLE.pattern.matcher(fileString);
+        // TODO: ADD A SWITCH CASE
+        if (var.matches()) return new IntegerVariableLine(fileString);
         return new CodeLine(fileString);
     }
 
