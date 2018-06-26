@@ -7,11 +7,13 @@ import java.util.regex.Matcher;
  */
 public class LineFactory {
 
-    /** Stores an instance of a class */
-    private static LineFactory instance = new LineFactory();
-
     /** Represents a delimiter that is used by the regular expressions */
     private final static String REGEX_DELIMITER = "|";
+
+    /** Stores an instance of a class */
+    private static LineFactory instance = new LineFactory();
+    /** Stores a string concatenation of stored words for all the data types that are supported by the program */
+    private static String dataTypesRegex;
 
     /** Represents all stored words for all data types that are supported by the program */
     private enum Type {
@@ -26,6 +28,7 @@ public class LineFactory {
 
     /**
      * @return a String concatenation of stored words for all the data types that are supported by the program
+     * (WITHOUT round brackets)
      */
     private static String getAllTypesForRegex() {
         StringBuilder result = new StringBuilder();
@@ -52,7 +55,7 @@ public class LineFactory {
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
          */
-        VARIABLE("\\s*+(final\\s++)?(" + getAllTypesForRegex() +
+        VARIABLE("\\s*+(final\\s++)?(" + dataTypesRegex +
                 ")\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+\\d++\\s*+)?;\\s*+");
 
         private final java.util.regex.Pattern pattern;
@@ -79,7 +82,9 @@ public class LineFactory {
     }
 
     /** A private constructor */
-    private LineFactory() {}
+    private LineFactory() {
+        dataTypesRegex = getAllTypesForRegex();
+    }
 
     /**
      * @return an instance of a class
