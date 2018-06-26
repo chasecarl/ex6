@@ -96,6 +96,29 @@ public class LineFactoryTest {
                 instanceof IntegerVariableLine);
     }
 
+    @Test
+    public void checkInteger_1() {
+
+        String posMessEnd = "\nis a valid string";
+        String negMessEnd = "\nis not a valid string";
+
+        String typeAndValWithoutSpace = "intnumber;";
+        Assert.assertFalse(typeAndValWithoutSpace + negMessEnd, instance.createLine(typeAndValWithoutSpace) instanceof IntegerVariableLine);
+    }
+
+    @Test
+    public void checkInteger_2() {
+
+        String posMessEnd = "\nis a valid string";
+        String negMessEnd = "\nis not a valid string";
+
+        String finalInt = "final int a;";
+        Assert.assertTrue(finalInt + negMessEnd, instance.createLine(finalInt) instanceof IntegerVariableLine);
+    }
+
+
+
+
     /*
     It's actually not the way we should right it
     It's better to write a separate method for every test (because of modularity)
