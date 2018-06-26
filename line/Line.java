@@ -7,5 +7,4 @@ public interface Line {
 
     String getContent();
 
-    default boolean isInformable() { return false; }
 }

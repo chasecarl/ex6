@@ -11,6 +11,4 @@ public class CodeLine extends AbstractLine {
      */
     CodeLine(String content) { super(content); }
 
-    @Override
-    public boolean isInformable() { return true; }
 }
