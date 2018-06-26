@@ -2,7 +2,6 @@ package main;
 
 import line.Line;
 import parser.Parser;
-import scope.Scope;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +30,6 @@ public class Sjavac {
 //            for (Line line : lines) {
 //                System.out.println(line.getContent());
 //            }
-            Scope main = new Scope(null);
 
         }
         // TODO: REORGANIZE EXCEPTIONS

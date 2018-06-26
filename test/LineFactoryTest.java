@@ -1,8 +1,6 @@
 package test;
 
-import line.CommentLine;
-import line.EmptyLine;
-import line.LineFactory;
+import line.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,5 +55,62 @@ public class LineFactoryTest {
         String notStartCom = "some shit \\\\";
         Assert.assertFalse("Slashes must appear at the start of the line",
                 instance.createLine(notStartCom) instanceof CommentLine);
+    }
+
+    @Test
+    public void checkIntegerVariableLinePattern() {
+
+        String posMessEnd = "\nis a valid string";
+        String negMessEnd = "\nis not a valid string";
+
+
+        String declar = "int a;";
+        Assert.assertTrue(declar + posMessEnd, instance.createLine(declar) instanceof IntegerVariableLine);
+
+        String messydec = "           int               b         ;             ";
+        Assert.assertTrue(messydec + posMessEnd, instance.createLine(messydec) instanceof IntegerVariableLine);
+
+        String notInt = " ind k;";
+        Assert.assertFalse(notInt + negMessEnd, instance.createLine(notInt) instanceof IntegerVariableLine);
+
+        String notADec = "q int s;";
+        Assert.assertFalse(notADec + negMessEnd, instance.createLine(notADec) instanceof IntegerVariableLine);
+
+        String dunderName = " int __;";
+        Assert.assertTrue(dunderName + posMessEnd, instance.createLine(dunderName) instanceof IntegerVariableLine);
+
+        String digitName = "int a1;";
+        Assert.assertTrue(digitName + posMessEnd, instance.createLine(digitName) instanceof IntegerVariableLine);
+
+        String afterUnder = "int a_;";
+        Assert.assertTrue(afterUnder + posMessEnd, instance.createLine(afterUnder) instanceof IntegerVariableLine);
+
+        String digitFirst = "int 2a;";
+        Assert.assertFalse(digitFirst + negMessEnd, instance.createLine(digitFirst) instanceof IntegerVariableLine);
+
+        String onlyUnder = "int _;";
+        Assert.assertFalse(onlyUnder + negMessEnd, instance.createLine(onlyUnder) instanceof IntegerVariableLine);
+
+        String digFirstAndUnder = "int 5_b;";
+        Assert.assertFalse(digFirstAndUnder + negMessEnd, instance.createLine(digFirstAndUnder)
+                instanceof IntegerVariableLine);
+    }
+
+    /*
+    It's actually not the way we should right it
+    It's better to write a separate method for every test (because of modularity)
+    or for every very specialized set of tests (the first option is preferable though)
+    The method name should have a word "should" in it and needs to be self-explanatory
+    (like method names in SjavacTest - don't be afraid of lengthy names)
+    TODO: IF SOMETHING GOES WRONG IN THE PATTERN FOR IntegerVariableLine AND THE METHOD ABOVE FAILS -
+    TODO: WE PROBABLY NEED TO DIVIDE IT INTO SEPARATE METHODS. BUT FOR NOW IT WILL STAY AS IT IS
+    Here is a signature for the first one:
+     */
+
+    @Test
+    public void finalModifierDeclarationWithoutInitializationShouldPass() {
+
+//        String testString = "blabla";
+        Assert.assertTrue(true);
     }
 }
