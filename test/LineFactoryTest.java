@@ -104,13 +104,16 @@ public class LineFactoryTest {
     (like method names in SjavacTest - don't be afraid of lengthy names)
     TODO: IF SOMETHING GOES WRONG IN THE PATTERN FOR IntegerVariableLine AND THE METHOD ABOVE FAILS -
     TODO: WE PROBABLY NEED TO DIVIDE IT INTO SEPARATE METHODS. BUT FOR NOW IT WILL STAY AS IT IS
-    Here is a signature for the first one:
+    Here is a signature for the first one (I also created a new static class for it and added it to AllTests,
+    because the method with the same name can be for all data types):
      */
 
-    @Test
-    public void finalModifierDeclarationWithoutInitializationShouldPass() {
+    public static class IntVar {
+        @Test
+        public void finalModifierDeclarationWithoutInitializationShouldPass() {
 
 //        String testString = "blabla";
-        Assert.assertTrue(true);
+            Assert.assertTrue(true);
+        }
     }
 }
