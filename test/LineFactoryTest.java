@@ -511,4 +511,90 @@ public class LineFactoryTest {
         }
 
     }
+
+    public static class Assignment {
+
+        //NormalAssignment
+
+        @Test
+        public void normalIntAssignmentShouldPass(){
+            String check = "number = 20;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalDoubleAssignmentShouldPass(){
+            String check = "number = 20.0;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalBooleanTrueAssignmentShouldPass(){
+            String check = "isFound = true;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalBooleanFalseAssignmentShouldPass(){
+            String check = "isFound = false;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalCharAssignmentShouldPass(){
+            String check = "symbol = 'y';";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalStringAssignmentShouldPass(){
+            String check = "text = \"line\";";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        //WrongAssignment
+
+        @Test
+        public void IntAssignmentWithDoubleEqualityShouldNotPass(){
+            String check = "number == 100;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void IntAssignmentWithTypeShouldNotPass(){
+            String check = "Int number = 100;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithSplittedNameShouldNotPass(){
+            String check = "num ber = 20;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithSuperSplittedNameShouldNotPass(){
+            String check = "n u m be r = 20;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithoutSemicolonShouldNotPass(){
+            String check = "number = 2";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithDoubleSemicolonShouldNotPass(){
+            String check = "number = 2;;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithColonIndteadOfSemicolonShouldNotPass(){
+            String check = "number = 2:";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+    }
 }

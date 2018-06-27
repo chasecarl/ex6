@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
         SjavacTest.class,
         LineFactoryTest.class,
         LineFactoryTest.IntVar.class,
-        LineFactoryTest.DoubleVar.class
+        LineFactoryTest.DoubleVar.class,
+        LineFactoryTest.Assignment.class
         // put other test classes here
 })
 public class AllTests {
