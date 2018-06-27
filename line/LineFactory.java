@@ -87,6 +87,11 @@ public class LineFactory {
         return result.toString();
     }
 
+    private static String getVarNameRegex() { return "_\\w++|[A-Za-z]{1}\\w*+"; }
+    private static String getVarValueAssignmentRegex() {
+        return "\\s*+=\\s*+" + getAllValueTypesRegex() + "\\s*+";
+    }
+
     /** Stores all available patterns */
     private enum Pattern {
         EMPTY ("\\s*+"),
@@ -101,9 +106,11 @@ public class LineFactory {
         it starts with a non-underscore (and a non-digit) char and then all chars can be used (though they are optional)
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
+        TODO: USE (?:exp) TO DISABLE CAPTURING GROUPS
          */
         VARIABLE("\\s*+(" + getAllModifiersRegex() + "\\s++)?((" + getAllDataTypesRegex() +
-                ")\\s++)?(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesRegex() +"\\s*+)?;\\s*+");
+                ")\\s++)?(" + getVarNameRegex() + ")\\s*+(" + getVarValueAssignmentRegex() + ")?" +
+                "(,\\s*+(" + getVarNameRegex() + ")\\s++(" + getVarValueAssignmentRegex() + ")?)*+;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
