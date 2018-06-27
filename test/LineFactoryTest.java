@@ -278,4 +278,323 @@ public class LineFactoryTest {
             Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
         }
     }
+
+
+
+    public static class DoubleVar {
+
+        String posMessEnd = "\nis a valid string";
+        String negMessEnd = "\nis not a valid string";
+
+        @Test
+        public void normalDeclarationShouldPass_double(){
+            String declar = "double a;";
+            Assert.assertTrue(declar + posMessEnd, instance.createLine(declar) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void manySpacesShouldPass_double(){
+            String messydec = "           double               b         ;             ";
+            Assert.assertTrue(messydec + posMessEnd, instance.createLine(messydec) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void wrongTypeNameShouldNot_double(){
+            String notDouble = " doublp k;";
+            Assert.assertFalse(notDouble + negMessEnd, instance.createLine(notDouble) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void notExistingModifierBeforeTypeShouldNotPass_double(){
+            String notADec = "q double s;";
+            Assert.assertFalse(notADec + negMessEnd, instance.createLine(notADec) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void MoreThenOneUnderScoreInTheNameShouldPass_double(){
+            String dunderName = " double __;";
+            Assert.assertTrue(dunderName + posMessEnd, instance.createLine(dunderName) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void OnlyOneUnderScoreInTheNameShouldNotPass_double(){
+            String onlyUnder = "double _;";
+            Assert.assertFalse(onlyUnder + negMessEnd, instance.createLine(onlyUnder) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromLetterAndEndsWithNumberShouldPass_double(){
+            String digitName = "double a1;";
+            Assert.assertTrue(digitName + posMessEnd, instance.createLine(digitName) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromLetterAndEndsWithUnderScoreShouldPass_double(){
+            String afterUnder = "double a_;";
+            Assert.assertTrue(afterUnder + posMessEnd, instance.createLine(afterUnder) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromNumberAndContainsLetterShouldNotPass_double(){
+            String digitFirst = "double 2a;";
+            Assert.assertFalse(digitFirst + negMessEnd, instance.createLine(digitFirst) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromNumberAndContainsUnderScoreAndNumberShouldNotPass_double(){
+            String digFirstAndUnder = "double 5_b;";
+            Assert.assertFalse(digFirstAndUnder + negMessEnd, instance.createLine(digFirstAndUnder) instanceof DoubleVariableLine);
+        }
+
+        //Ilia Tests
+        @Test
+        public void typeWithValueWithoutSpaceShouldNotPass_double() {
+            String typeAndValWithoutSpace = "doublenumber;";
+            Assert.assertFalse(typeAndValWithoutSpace + negMessEnd, instance.createLine(typeAndValWithoutSpace) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void finalModifierDeclarationWithoutInitializationShouldPass_double(){
+            String finalDouble = "final double a;";
+            Assert.assertTrue(finalDouble + negMessEnd, instance.createLine(finalDouble) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void finalModifierDeclarationWithoutInitializationWithBigLetterShouldNotPass_double(){
+            String FinalDouble = "Final double a;";
+            Assert.assertFalse(FinalDouble + negMessEnd, instance.createLine(FinalDouble) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationShouldPass_double(){
+            String normalIntialisation = "double a = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationWithBigLettersInNameShouldPass_double(){
+            String normalIntialisation = "double A = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationWithBigANdSmallfLettersInNameShouldPass_double(){
+            String normalIntialisation = "double Apple = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithTwoSimbolsOfEqualityShouldNotPass_double(){
+            String check = "double a == 10;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithLetterInsteadOfNumberShouldNotPass_double(){
+            String check = "double a = k;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithUnderScoreInsteadOfNumberShouldNotPass_double(){
+            String check = "double a = _;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithoutSemicolonShouldNotPass_double(){
+            String check = "double a = 1";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithDoubleSemilconShouldNotPass_double(){
+            String check = "double a = 1;;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithoutValueShouldNotPass_double(){
+            String check = "double a = ";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusLetterShouldNotPass_double(){
+            String check = "double a = 1b;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusSpacePlusLetterShouldNotPass_double(){
+            String check = "double a = 1 b;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusSpacePlusNumberShouldNotPass_double(){
+            String check = "double a = 1 2;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfTwoValuesShouldPass_double(){
+            String check = "double a = 1, b = 2;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfThreeValuesShouldPass_double(){
+            String check = "double a = 1, b = 2, c = 3;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfOneValueAndDeclarationOfAnotherShouldPass_Double(){
+            String check = "double a = 1, b;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfOneValueAndInitialisationOfAnotherShouldPass_double(){
+            String check = "double a, b = 3;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfTwoValuesWithoutSpaceAfterCommaShouldPass_double(){
+            String check = "double a,b;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfTwoValuesWithSpaceAfterCommaShouldPass_double(){
+            String check = "double a,b;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfThreeValuesShouldPass_double(){
+            String check = "double a, b, c;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfThreeValuesWithFinalModifierShouldPass_double(){
+            String check = "final double a, b, c;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        //unique double tests
+        @Test
+        public void normalInitialistionWithDotSouldPass_double(){
+            String check = "double a = 5.0;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialistionWithDotWithoutNumberAfterDotSouldPass_double(){
+            String check = "double a = 6.;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialistionWithDotWithoutNumberBeforeDotSouldPass_double(){
+            String check = "double a = .8;";
+            Assert.assertTrue(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+        @Test
+        public void normalInitialistionOnlyWithDotSouldNotPass_double(){
+            String check = "double a = .;";
+            Assert.assertFalse(instance.createLine(check) instanceof DoubleVariableLine);
+        }
+
+    }
+
+    public static class Assignment {
+
+        //NormalAssignment
+
+        @Test
+        public void normalIntAssignmentShouldPass(){
+            String check = "number = 20;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalDoubleAssignmentShouldPass(){
+            String check = "number = 20.0;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalBooleanTrueAssignmentShouldPass(){
+            String check = "isFound = true;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalBooleanFalseAssignmentShouldPass(){
+            String check = "isFound = false;";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalCharAssignmentShouldPass(){
+            String check = "symbol = 'y';";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void normalStringAssignmentShouldPass(){
+            String check = "text = \"line\";";
+            Assert.assertTrue(instance.createLine(check) instanceof VariableLine);
+        }
+
+        //WrongAssignment
+
+        @Test
+        public void IntAssignmentWithDoubleEqualityShouldNotPass(){
+            String check = "number == 100;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void IntAssignmentWithTypeShouldNotPass(){
+            String check = "Int number = 100;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithSplittedNameShouldNotPass(){
+            String check = "num ber = 20;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithSuperSplittedNameShouldNotPass(){
+            String check = "n u m be r = 20;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithoutSemicolonShouldNotPass(){
+            String check = "number = 2";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithDoubleSemicolonShouldNotPass(){
+            String check = "number = 2;;";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+        @Test
+        public void assignmentWithColonIndteadOfSemicolonShouldNotPass(){
+            String check = "number = 2:";
+            Assert.assertFalse(instance.createLine(check) instanceof VariableLine);
+        }
+
+    }
 }
