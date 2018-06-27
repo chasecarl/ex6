@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class LineFactoryTest {
 
-    private LineFactory instance;
+    private static LineFactory instance;
 
     @Before
     public void initialize() {
@@ -57,64 +57,7 @@ public class LineFactoryTest {
                 instance.createLine(notStartCom) instanceof CommentLine);
     }
 
-    @Test
-    public void checkIntegerVariableLinePattern() {
 
-        String posMessEnd = "\nis a valid string";
-        String negMessEnd = "\nis not a valid string";
-
-
-        String declar = "int a;";
-        Assert.assertTrue(declar + posMessEnd, instance.createLine(declar) instanceof IntegerVariableLine);
-
-        String messydec = "           int               b         ;             ";
-        Assert.assertTrue(messydec + posMessEnd, instance.createLine(messydec) instanceof IntegerVariableLine);
-
-        String notInt = " ind k;";
-        Assert.assertFalse(notInt + negMessEnd, instance.createLine(notInt) instanceof IntegerVariableLine);
-
-        String notADec = "q int s;";
-        Assert.assertFalse(notADec + negMessEnd, instance.createLine(notADec) instanceof IntegerVariableLine);
-
-        String dunderName = " int __;";
-        Assert.assertTrue(dunderName + posMessEnd, instance.createLine(dunderName) instanceof IntegerVariableLine);
-
-        String digitName = "int a1;";
-        Assert.assertTrue(digitName + posMessEnd, instance.createLine(digitName) instanceof IntegerVariableLine);
-
-        String afterUnder = "int a_;";
-        Assert.assertTrue(afterUnder + posMessEnd, instance.createLine(afterUnder) instanceof IntegerVariableLine);
-
-        String digitFirst = "int 2a;";
-        Assert.assertFalse(digitFirst + negMessEnd, instance.createLine(digitFirst) instanceof IntegerVariableLine);
-
-        String onlyUnder = "int _;";
-        Assert.assertFalse(onlyUnder + negMessEnd, instance.createLine(onlyUnder) instanceof IntegerVariableLine);
-
-        String digFirstAndUnder = "int 5_b;";
-        Assert.assertFalse(digFirstAndUnder + negMessEnd, instance.createLine(digFirstAndUnder)
-                instanceof IntegerVariableLine);
-    }
-
-    @Test
-    public void checkInteger_1() {
-
-        String posMessEnd = "\nis a valid string";
-        String negMessEnd = "\nis not a valid string";
-
-        String typeAndValWithoutSpace = "intnumber;";
-        Assert.assertFalse(typeAndValWithoutSpace + negMessEnd, instance.createLine(typeAndValWithoutSpace) instanceof IntegerVariableLine);
-    }
-
-    @Test
-    public void checkInteger_2() {
-
-        String posMessEnd = "\nis a valid string";
-        String negMessEnd = "\nis not a valid string";
-
-        String finalInt = "final int a;";
-        Assert.assertTrue(finalInt + negMessEnd, instance.createLine(finalInt) instanceof IntegerVariableLine);
-    }
 
 
 
@@ -132,11 +75,207 @@ public class LineFactoryTest {
      */
 
     public static class IntVar {
-        @Test
-        public void finalModifierDeclarationWithoutInitializationShouldPass() {
 
-//        String testString = "blabla";
-            Assert.assertTrue(true);
+        String posMessEnd = "\nis a valid string";
+        String negMessEnd = "\nis not a valid string";
+
+        @Test
+        public void normalDeclarationShouldPass_Int(){
+            String declar = "int a;";
+            Assert.assertTrue(declar + posMessEnd, instance.createLine(declar) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void manySpacesShouldPass_Int(){
+            String messydec = "           int               b         ;             ";
+            Assert.assertTrue(messydec + posMessEnd, instance.createLine(messydec) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void wrongTypeNameShouldNot_Int(){
+            String notInt = " ind k;";
+            Assert.assertFalse(notInt + negMessEnd, instance.createLine(notInt) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void notExistingModifierBeforeTypeShouldNotPass_Int(){
+            String notADec = "q int s;";
+            Assert.assertFalse(notADec + negMessEnd, instance.createLine(notADec) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void MoreThenOneUnderScoreInTheNameShouldPass_Int(){
+            String dunderName = " int __;";
+            Assert.assertTrue(dunderName + posMessEnd, instance.createLine(dunderName) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void OnlyOneUnderScoreInTheNameShouldNotPass_Int(){
+            String onlyUnder = "int _;";
+            Assert.assertFalse(onlyUnder + negMessEnd, instance.createLine(onlyUnder) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromLetterAndEndsWithNumberShouldPass_Int(){
+            String digitName = "int a1;";
+            Assert.assertTrue(digitName + posMessEnd, instance.createLine(digitName) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromLetterAndEndsWithUnderScoreShouldPass_Int(){
+            String afterUnder = "int a_;";
+            Assert.assertTrue(afterUnder + posMessEnd, instance.createLine(afterUnder) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromNumberAndContainsLetterShouldNotPass_Int(){
+            String digitFirst = "int 2a;";
+            Assert.assertFalse(digitFirst + negMessEnd, instance.createLine(digitFirst) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void NameStartsFromNumberAndContainsUnderScoreAndNumberShouldNotPass_Int(){
+            String digFirstAndUnder = "int 5_b;";
+            Assert.assertFalse(digFirstAndUnder + negMessEnd, instance.createLine(digFirstAndUnder) instanceof IntegerVariableLine);
+        }
+
+        //Ilia Tests
+        @Test
+        public void typeWithValueWithoutSpaceShouldNotPass_Int() {
+            String typeAndValWithoutSpace = "intnumber;";
+            Assert.assertFalse(typeAndValWithoutSpace + negMessEnd, instance.createLine(typeAndValWithoutSpace) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void finalModifierDeclarationWithoutInitializationShouldPass_Int(){
+            String finalInt = "final int a;";
+            Assert.assertTrue(finalInt + negMessEnd, instance.createLine(finalInt) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void finalModifierDeclarationWithoutInitializationWithBigLetterShouldNotPass_Int(){
+            String FinalInt = "Final int a;";
+            Assert.assertFalse(FinalInt + negMessEnd, instance.createLine(FinalInt) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationShouldPass_Int(){
+            String normalIntialisation = "int a = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationWithBigLettersInNameShouldPass_Int(){
+            String normalIntialisation = "int A = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationWithBigANdSmallfLettersInNameShouldPass_Int(){
+            String normalIntialisation = "int Apple = 10;";
+            Assert.assertTrue(normalIntialisation + negMessEnd, instance.createLine(normalIntialisation) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithTwoSimbolsOfEqualityShouldNotPass_Int(){
+            String check = "int a == 10;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithLetterInsteadOfNumberShouldNotPass_Int(){
+            String check = "int a = k;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithUnderScoreInsteadOfNumberShouldNotPass_Int(){
+            String check = "int a = _;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithoutSemicolonShouldNotPass_Int(){
+            String check = "int a = 1";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithDoubleSemilconShouldNotPass_Int(){
+            String check = "int a = 1;;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithoutValueShouldNotPass_Int(){
+            String check = "int a = ";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusLetterShouldNotPass_Int(){
+            String check = "int a = 1b;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusSpacePlusLetterShouldNotPass_Int(){
+            String check = "int a = 1 b;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void initialisationWithValueNumberPlusSpacePlusNumberShouldNotPass_Int(){
+            String check = "int a = 1 2;";
+            Assert.assertFalse(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfTwoValuesShouldPass_Int(){
+            String check = "int a = 1, b = 2;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfThreeValuesShouldPass_Int(){
+            String check = "int a = 1, b = 2, c = 3;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalInitialisationOfOneValueAndDeclarationOfAnotherShouldPass_Int(){
+            String check = "int a = 1, b;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfOneValueAndInitialisationOfAnotherShouldPass_Int(){
+            String check = "int a, b = 3;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfTwoValuesWithoutSpaceAfterCommaShouldPass_Int(){
+            String check = "int a,b;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfTwoValuesWithSpaceAfterCommaShouldPass_Int(){
+            String check = "int a,b;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfThreeValuesShouldPass_Int(){
+            String check = "int a, b, c;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
+        }
+
+        @Test
+        public void normalDeclarationOfThreeValuesWithFinalModifierShouldPass_Int(){
+            String check = "final int a, b, c;";
+            Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
         }
     }
 }
