@@ -1,5 +1,6 @@
 package parser;
 
+import line.IllegalLineFormatException;
 import line.Line;
 import line.LineFactory;
 
@@ -30,7 +31,7 @@ public class Parser {
      * @return an ArrayList of Line objects
      * @throws IOException if there was an io problem
      */
-    public ArrayList<Line> parseFile(String path) throws IOException {
+    public ArrayList<Line> parseFile(String path) throws IOException, IllegalLineFormatException {
         try (FileReader reader = new FileReader(path)) {
             BufferedReader buffered = new BufferedReader(reader);
             ArrayList<Line> result = new ArrayList<>();
