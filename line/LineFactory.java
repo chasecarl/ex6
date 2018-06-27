@@ -21,11 +21,11 @@ public class LineFactory {
         },
         DOUBLE {
             public String toString() { return "double"; }
-            public String getTypeSpecifyDataRegex() { return "\\d*+\\.d*+"; }
+            public String getTypeSpecifyDataRegex() { return "(\\d++\\.\\d*+|\\d*+\\.\\d++)"; }
         },
         STRING {
             public String toString() { return "String"; }
-            public String getTypeSpecifyDataRegex() { return "\".*+\""; }
+            public String getTypeSpecifyDataRegex() { return "\".*\""; }
         },
         BOOLEAN {
             public String toString() { return "boolean"; }
@@ -89,7 +89,10 @@ public class LineFactory {
 
     private static String getVarNameRegex() { return "_\\w++|[A-Za-z]{1}\\w*+"; }
     private static String getVarValueAssignmentRegex() {
-        return "\\s*+=\\s*+" + getAllValueTypesRegex() + "\\s*+";
+        return "=\\s*+(" + getAllValueTypesRegex() + ")\\s*+";
+    }
+    private static String getVarNameAndPossibleAssignmentRegex() {
+        return "(" + getVarNameRegex() + ")\\s*+(" + getVarValueAssignmentRegex() + ")?";
     }
 
     /** Stores all available patterns */
@@ -109,8 +112,8 @@ public class LineFactory {
         TODO: USE (?:exp) TO DISABLE CAPTURING GROUPS
          */
         VARIABLE("\\s*+(" + getAllModifiersRegex() + "\\s++)?((" + getAllDataTypesRegex() +
-                ")\\s++)?(" + getVarNameRegex() + ")\\s*+(" + getVarValueAssignmentRegex() + ")?" +
-                "(,\\s*+(" + getVarNameRegex() + ")\\s++(" + getVarValueAssignmentRegex() + ")?)*+;\\s*+");
+                ")\\s++)?" + getVarNameAndPossibleAssignmentRegex() +
+                "(,\\s*+" + getVarNameAndPossibleAssignmentRegex() + ")*+;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
