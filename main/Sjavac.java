@@ -1,5 +1,6 @@
 package main;
 
+import line.IllegalLineFormatException;
 import line.Line;
 import parser.Parser;
 
@@ -39,6 +40,11 @@ public class Sjavac {
         }
         catch (IOException ioe) {
             System.out.println(IO_ERROR_CODE);
+            return;
+        }
+        catch (IllegalLineFormatException ilfe) {
+            System.err.println(ilfe.getMessage());
+            System.out.println(VERIFICATION_ERROR_CODE);
             return;
         }
         System.out.println(PASS_CODE);

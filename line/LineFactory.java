@@ -86,8 +86,8 @@ public class LineFactory {
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
          */
-        VARIABLE("\\s*+(final\\s++)?(" + getAllDataTypesForRegex() +
-                ")\\s++(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesForRegex() +"\\s*+)?;\\s*+");
+        VARIABLE("\\s*+(final\\s++)?((" + getAllDataTypesForRegex() +
+                ")\\s++)?(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesForRegex() +"\\s*+)?;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
@@ -101,21 +101,23 @@ public class LineFactory {
      * @param fileString a string to create from
      * @return a new Line object of a given String
      */
-    public Line createLine(String fileString) {
+    public Line createLine(String fileString) { //throws IllegalLineFormatException {
         Matcher empty = Pattern.EMPTY.pattern.matcher(fileString);
         if (empty.matches()) return new EmptyLine(fileString);
         Matcher comment = Pattern.COMMENT.pattern.matcher(fileString);
         if (comment.lookingAt()) return new CommentLine(fileString);
         Matcher var = Pattern.VARIABLE.pattern.matcher(fileString);
         if (var.matches()) {
-            String type = var.group(2);
+            String type = var.group(3);
+            if (type == null) { return new VariableAssignmentLine(fileString); }
             if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(fileString); }
             if (type.equals(Type.DOUBLE.toString())) { return new DoubleVariableLine(fileString); }
             if (type.equals(Type.STRING.toString())) { return new StringVariableLine(fileString); }
             if (type.equals(Type.BOOLEAN.toString())) { return new BooleanVariableLine(fileString); }
             if (type.equals(Type.CHAR.toString())) { return new CharVariableLine(fileString); }
         }
-        // TODO: THROW AN EXCEPTION
+        // TODO: UNCOMMENT THIS
+//        throw new IllegalLineFormatException();
         return new CodeLine(fileString);
     }
 
