@@ -14,7 +14,7 @@ public class LineFactory {
     private static LineFactory instance = new LineFactory();
 
     /** Represents all stored words for all data types that are supported by the program */
-    private enum Type {
+    enum Type {
         INTEGER {
             public String toString() { return "int"; }
             public String getTypeSpecifyDataRegex() { return "\\d++"; }
@@ -42,11 +42,27 @@ public class LineFactory {
         public abstract String getTypeSpecifyDataRegex();
     }
 
+    enum Modifier {
+        FINAL { public String toString() { return "final"; }};
+
+        public abstract String toString();
+    }
+
+    private static String getAllModifiersRegex() {
+        StringBuilder result = new StringBuilder();
+        for (Type type : Type.values()) {
+            result.append(type);
+            result.append(REGEX_DELIMITER);
+        }
+        result.deleteCharAt(result.length() - 1);
+        return result.toString();
+    }
+
     /**
      * @return a String concatenation of stored words for all the data types that are supported by the program
      * (WITHOUT round brackets)
      */
-    private static String getAllDataTypesForRegex() {
+    private static String getAllDataTypesRegex() {
         StringBuilder result = new StringBuilder();
         for (Type type : Type.values()) {
             result.append(type);
@@ -61,7 +77,7 @@ public class LineFactory {
      * @return a String concatenation of regexes where each regex corresponds to a certain data value format
      * of an appropriate type (WITHOUT round brackets)
      */
-    private static String getAllValueTypesForRegex() {
+    private static String getAllValueTypesRegex() {
         StringBuilder result = new StringBuilder();
         for (Type type : Type.values()) {
             result.append(type.getTypeSpecifyDataRegex());
@@ -86,8 +102,8 @@ public class LineFactory {
         \4 - an optional variable assignment (an equals sign and digits)
         ends with a semicolon
          */
-        VARIABLE("\\s*+(final\\s++)?((" + getAllDataTypesForRegex() +
-                ")\\s++)?(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesForRegex() +"\\s*+)?;\\s*+");
+        VARIABLE("\\s*+(" + getAllModifiersRegex() + "\\s++)?((" + getAllDataTypesRegex() +
+                ")\\s++)?(_[\\w]++|[A-Za-z]{1}\\w*+)\\s*+(\\s*+=\\s*+" + getAllValueTypesRegex() +"\\s*+)?;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
@@ -118,7 +134,7 @@ public class LineFactory {
         }
         // TODO: UNCOMMENT THIS
 //        throw new IllegalLineFormatException();
-        return new CodeLine(fileString);
+        return new BrokenLine(fileString);
     }
 
     /** A private constructor */

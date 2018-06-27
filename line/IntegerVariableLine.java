@@ -1,6 +1,6 @@
 package line;
 
-public class IntegerVariableLine extends CodeLine {
+public class IntegerVariableLine extends VariableLine {
 
     IntegerVariableLine(String content) { super(content);}
 }
