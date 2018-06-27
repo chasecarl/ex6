@@ -8,7 +8,7 @@ public class VariableLine extends AbstractLine {
     private LineFactory.Modifier[] modifiers;
     private LineFactory.Type type;
     private boolean isInitialized;
-    
+
     /**
      * Constructs a code line from a string
      * @param content a string from which to construct

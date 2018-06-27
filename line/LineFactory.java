@@ -50,8 +50,8 @@ public class LineFactory {
 
     private static String getAllModifiersRegex() {
         StringBuilder result = new StringBuilder();
-        for (Type type : Type.values()) {
-            result.append(type);
+        for (Modifier modifier : Modifier.values()) {
+            result.append(modifier);
             result.append(REGEX_DELIMITER);
         }
         result.deleteCharAt(result.length() - 1);

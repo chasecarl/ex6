@@ -32,7 +32,7 @@ public class SjavacTest {
         Class exClass = Class.forName("main.IllegalNumberOfArgumentsException");
         exception.expect(exClass);
 
-        Field exMessage = exClass.getDeclaredField("message");
+        Field exMessage = exClass.getDeclaredField("MESSAGE");
         exMessage.setAccessible(true);
         Constructor constructor = exClass.getDeclaredConstructor();
         constructor.setAccessible(true);
