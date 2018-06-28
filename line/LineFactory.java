@@ -14,40 +14,6 @@ public class LineFactory {
     /** Stores an instance of a class */
     private static LineFactory instance = new LineFactory();
 
-    /** Represents all stored words for all data types that are supported by the program */
-    enum Type {
-        INTEGER {
-            public String toString() { return "int"; }
-            public String getTypeSpecifyDataRegex() { return "\\d++"; }
-        },
-        DOUBLE {
-            public String toString() { return "double"; }
-            public String getTypeSpecifyDataRegex() { return "(?:\\d++\\.\\d*+|\\d*+\\.\\d++)"; }
-        },
-        STRING {
-            public String toString() { return "String"; }
-            public String getTypeSpecifyDataRegex() { return "\".*\""; }
-        },
-        BOOLEAN {
-            public String toString() { return "boolean"; }
-            // TODO: REMEMBER: IT ADDS A CAPTURING GROUP
-            public String getTypeSpecifyDataRegex() { return "(?:true|false|" + INTEGER.getTypeSpecifyDataRegex()
-                    + REGEX_DELIMITER + DOUBLE.getTypeSpecifyDataRegex() + ")"; }
-        },
-        CHAR {
-            public String toString() { return "char"; }
-            public String getTypeSpecifyDataRegex() { return "\'.?\'"; }
-        };
-
-        public abstract String toString();
-        public abstract String getTypeSpecifyDataRegex();
-    }
-
-    enum Modifier {
-        FINAL { public String toString() { return "final"; }};
-
-        public abstract String toString();
-    }
 
     private static String getAllModifiersRegex() {
         StringBuilder result = new StringBuilder();

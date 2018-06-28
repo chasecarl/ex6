@@ -1,5 +1,7 @@
 package line;
 
+import component.Component;
+
 import java.util.ArrayList;
 
 /**
@@ -9,14 +11,32 @@ public class VariableLine extends AbstractLine {
 
     private ArrayList<String> modifiers;
     private ArrayList<String> names;
-    private String type;
+    private Type type;
     private ArrayList<String> values;
+    private boolean isFinal;
 
     public ArrayList<String> getModifiers() { return modifiers; }
-    public String getType() { return type; }
+    public Type getType() { return type; }
+    public ArrayList<String> getNames() { return names; }
     public ArrayList<String> getValues() { return values; }
 
+    public ArrayList<? extends Component> extractComponents() throws IllegalLineFormatException {
+        if (isFinal) {
+            for (int i = 0; i < names.size(); i++) {
+                String value = values.get(i);
+                String name = names.get(i);
+                if (value == null && name != null) throw new IllegalLineFormatException();
+            }
+        }
+        return null;
+    }
 
+    private Type convertType(String stringType) {
+        for (Type type : Type.values()) {
+            if (type.toString().equals(stringType)) return type;
+        }
+        return null;
+    }
 
     /**
      * Constructs a code line that contains variables from a string
@@ -24,13 +44,11 @@ public class VariableLine extends AbstractLine {
      */
     VariableLine(String content) { super(content); }
 
-    VariableLine() {}
-
     VariableLine(ArrayList<String> modifiers, String type, ArrayList<String> names, ArrayList<String> values) {
         this.modifiers = modifiers;
-        this.type = type;
+        isFinal = modifiers.contains(Modifier.FINAL.toString());
+        this.type = convertType(type);
         this.names = names;
         this.values = values;
-
     }
 }

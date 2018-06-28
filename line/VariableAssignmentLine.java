@@ -6,6 +6,6 @@ public class VariableAssignmentLine extends VariableLine {
     public VariableAssignmentLine(String fileString) { super(fileString); }
 
     public VariableAssignmentLine(ArrayList<String> names, ArrayList<String> values) {
-        super();
+        super(null, null, names, values);
     }
 }
