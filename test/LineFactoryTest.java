@@ -597,4 +597,24 @@ public class LineFactoryTest {
         }
 
     }
+
+
+    public static class CharVar {
+
+
+        //May take off back slash
+        @Test
+        public void normalDeclarationShouldPass(){
+            String check = "char symbol = \'k\';";
+            Assert.assertTrue(instance.createLine(check) instanceof CharVariableLine);
+        }
+
+        @Test
+        public void finalModifierDeclarationShouldPass(){
+            String check = "final char symbol = 'p';";
+            Assert.assertTrue(instance.createLine(check) instanceof CharVariableLine);
+        }
+
+
+    }
 }
