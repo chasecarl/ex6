@@ -1,5 +1,6 @@
 package line;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 /**
@@ -108,8 +109,8 @@ public class LineFactory {
             OR
         it starts with a non-underscore (and a non-digit) char and then all chars can be used (though they are optional)
         \4 - an optional variable assignment
-        \6 - an optional name for the 2nd var
-        \7 - an optional value for the 2nd var
+        \5 - an optional name for the 2nd var
+        \6 - an optional value for the 2nd var
         ends with a semicolon
          */
         VARIABLE("\\s*+(?:(" + getAllModifiersRegex() + ")\\s++)?(?:(" + getAllDataTypesRegex() +
@@ -135,13 +136,23 @@ public class LineFactory {
         if (comment.lookingAt()) return new CommentLine(fileString);
         Matcher var = Pattern.VARIABLE.pattern.matcher(fileString);
         if (var.matches()) {
+
+            ArrayList<String> modifiers = new ArrayList<>();
+            modifiers.add(var.group(1));
+            ArrayList<String> names = new ArrayList<>();
+            names.add(var.group(3));
+            names.add(var.group(5));
+            ArrayList<String> values = new ArrayList<>();
+            values.add(var.group(4));
+            values.add(var.group(6));
+
             String type = var.group(2);
-            if (type == null) { return new VariableAssignmentLine(fileString); }
-            if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(fileString); }
-            if (type.equals(Type.DOUBLE.toString())) { return new DoubleVariableLine(fileString); }
-            if (type.equals(Type.STRING.toString())) { return new StringVariableLine(fileString); }
-            if (type.equals(Type.BOOLEAN.toString())) { return new BooleanVariableLine(fileString); }
-            if (type.equals(Type.CHAR.toString())) { return new CharVariableLine(fileString); }
+            if (type == null) { return new VariableAssignmentLine(names, values); }
+            if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(modifiers, type, names, values);}
+            if (type.equals(Type.DOUBLE.toString())) { return new DoubleVariableLine(modifiers, type, names, values); }
+            if (type.equals(Type.STRING.toString())) { return new StringVariableLine(modifiers, type, names, values); }
+            if (type.equals(Type.BOOLEAN.toString())) { return new BooleanVariableLine(modifiers, type, names, values);}
+            if (type.equals(Type.CHAR.toString())) { return new CharVariableLine(modifiers, type, names, values); }
         }
         // TODO: UNCOMMENT THIS
 //        throw new IllegalLineFormatException();

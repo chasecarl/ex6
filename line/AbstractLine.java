@@ -14,6 +14,11 @@ public abstract class AbstractLine implements Line {
     }
 
     /**
+     * A default constructor
+     */
+    AbstractLine() {}
+
+    /**
      * @return a content of a line
      */
     @Override
