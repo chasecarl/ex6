@@ -1,0 +1,50 @@
+chasecarl
+ilia.bezgin
+
+
+
+
+=============================
+=      File description     =
+=============================
+line:
+    AbstractLine.java - Constructs an empty line from a string
+    BooleanVariableLine.java - implements boolean variable line
+    CharVariableLine.java - implements char variable line
+    CommentLine.java - Constructs a comment line from a string
+    DoubleVariableLine.java - implements double variable line
+    EmptyLine.java - Constructs an empty line from a string
+    IllegalLineFormatException.java - implements Illegal Line Format Exception
+    IntegerVariableLine.java - implements integer variable line
+    Line.java - implements line interface
+    LineFactory.java - Factory class that creates different types of Line objects
+    StringVariableLine.java - implements string variable line
+    VariableAssignmentLine.java implements variable assignment line
+    VariableLine.java - Represents a line that has a variable declaration and/or assignment
+main:
+    IllegalNumberOfArgumentsException.java - implements Illegal Number Of Arguments Exception
+    Sjavac.java - the main file of the project that runs it
+parser:
+    Parser.java - Parses a given file into lines
+
+
+
+
+=============================
+=          Design           =
+=============================
+We decided to check the Sjava file going through it line by line and creating lines of different types.
+Each line we add to the scope it belongs to. After in each scope provides checking lines legacy.
+
+=============================
+=  Implementation details   =
+=============================
+We divide all files to packages which helps to keep construction of the project.
+All line classes implements interface Line.
+We wrote the class LineFactory using design pattern Factory for creation new instanses of line type.
+
+
+=============================
+=    Answers to questions   =
+=============================
+-
