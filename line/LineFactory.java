@@ -110,10 +110,7 @@ public class LineFactory {
         \4 - an optional variable assignment
         \6 - an optional name for the 2nd var
         \7 - an optional value for the 2nd var
-        \2(n + 1) - an optional name for the n'th var
-        \2(n + 1) + 1 - an optional value for the n'th var
         ends with a semicolon
-        TODO: USE (?:exp) TO DISABLE CAPTURING GROUPS
          */
         VARIABLE("\\s*+(?:(" + getAllModifiersRegex() + ")\\s++)?(?:(" + getAllDataTypesRegex() +
                 ")\\s++)?" + getVarNameAndPossibleAssignmentRegex() +
