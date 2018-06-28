@@ -1,5 +1,7 @@
 package main;
 
+import component.Component;
+import component.Extractor;
 import line.IllegalLineFormatException;
 import line.Line;
 import parser.Parser;
@@ -26,11 +28,8 @@ public class Sjavac {
             Parser parser = Parser.getInstance();
             String currentPath = new File("").getAbsolutePath();
             String filePath = currentPath.concat(args[0]);
-//            System.out.println(filePath);
             ArrayList<Line> lines = parser.parseFile(filePath);
-//            for (Line line : lines) {
-//                System.out.println(line.getContent());
-//            }
+            ArrayList<? extends Component> components = Extractor.extract(lines);
 
         }
         // TODO: REORGANIZE EXCEPTIONS

@@ -95,7 +95,7 @@ public class LineFactory {
      * @param fileString a string to create from
      * @return a new Line object of a given String
      */
-    public Line createLine(String fileString) { //throws IllegalLineFormatException {
+    public Line createLine(String fileString) throws IllegalLineFormatException {
         Matcher empty = Pattern.EMPTY.pattern.matcher(fileString);
         if (empty.matches()) return new EmptyLine(fileString);
         Matcher comment = Pattern.COMMENT.pattern.matcher(fileString);
@@ -121,8 +121,7 @@ public class LineFactory {
             if (type.equals(Type.CHAR.toString())) { return new CharVariableLine(modifiers, type, names, values); }
         }
         // TODO: UNCOMMENT THIS
-//        throw new IllegalLineFormatException();
-        return new BrokenLine(fileString);
+        throw new IllegalLineFormatException();
     }
 
     /** A private constructor */
