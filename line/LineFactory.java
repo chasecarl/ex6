@@ -21,7 +21,7 @@ public class LineFactory {
         },
         DOUBLE {
             public String toString() { return "double"; }
-            public String getTypeSpecifyDataRegex() { return "(\\d++\\.\\d*+|\\d*+\\.\\d++)"; }
+            public String getTypeSpecifyDataRegex() { return "(?:\\d++\\.\\d*+|\\d*+\\.\\d++)"; }
         },
         STRING {
             public String toString() { return "String"; }
@@ -30,7 +30,7 @@ public class LineFactory {
         BOOLEAN {
             public String toString() { return "boolean"; }
             // TODO: REMEMBER: IT ADDS A CAPTURING GROUP
-            public String getTypeSpecifyDataRegex() { return "(true|false|" + INTEGER.getTypeSpecifyDataRegex()
+            public String getTypeSpecifyDataRegex() { return "(?:true|false|" + INTEGER.getTypeSpecifyDataRegex()
                     + REGEX_DELIMITER + DOUBLE.getTypeSpecifyDataRegex() + ")"; }
         },
         CHAR {
@@ -92,7 +92,7 @@ public class LineFactory {
         return "=\\s*+(" + getAllValueTypesRegex() + ")\\s*+";
     }
     private static String getVarNameAndPossibleAssignmentRegex() {
-        return "(" + getVarNameRegex() + ")\\s*+(" + getVarValueAssignmentRegex() + ")?";
+        return "(" + getVarNameRegex() + ")\\s*+(?:" + getVarValueAssignmentRegex() + ")?";
     }
 
     /** Stores all available patterns */
@@ -102,18 +102,22 @@ public class LineFactory {
         //TODO: CAN NAME BE int OR ANY OTHER DATA TYPE?
         /*
         Capturing groups:
-        \1 - an optional final modifier
+        \1 - an optional final (or any other if added) modifier
         \2 - a stored word for the type
         \3 - a variable name - it can start with underscore, but then it MUST have a non-underscore char
             OR
         it starts with a non-underscore (and a non-digit) char and then all chars can be used (though they are optional)
-        \4 - an optional variable assignment (an equals sign and digits)
+        \4 - an optional variable assignment
+        \6 - an optional name for the 2nd var
+        \7 - an optional value for the 2nd var
+        \2(n + 1) - an optional name for the n'th var
+        \2(n + 1) + 1 - an optional value for the n'th var
         ends with a semicolon
         TODO: USE (?:exp) TO DISABLE CAPTURING GROUPS
          */
-        VARIABLE("\\s*+(" + getAllModifiersRegex() + "\\s++)?((" + getAllDataTypesRegex() +
+        VARIABLE("\\s*+(?:(" + getAllModifiersRegex() + ")\\s++)?(?:(" + getAllDataTypesRegex() +
                 ")\\s++)?" + getVarNameAndPossibleAssignmentRegex() +
-                "(,\\s*+" + getVarNameAndPossibleAssignmentRegex() + ")*+;\\s*+");
+                "(?:,\\s*+" + getVarNameAndPossibleAssignmentRegex() + ")*+;\\s*+");
 
         private final java.util.regex.Pattern pattern;
 
@@ -134,7 +138,7 @@ public class LineFactory {
         if (comment.lookingAt()) return new CommentLine(fileString);
         Matcher var = Pattern.VARIABLE.pattern.matcher(fileString);
         if (var.matches()) {
-            String type = var.group(3);
+            String type = var.group(2);
             if (type == null) { return new VariableAssignmentLine(fileString); }
             if (type.equals(Type.INTEGER.toString())) { return new IntegerVariableLine(fileString); }
             if (type.equals(Type.DOUBLE.toString())) { return new DoubleVariableLine(fileString); }

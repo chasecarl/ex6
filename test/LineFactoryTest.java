@@ -277,6 +277,12 @@ public class LineFactoryTest {
             String check = "final int a, b, c;";
             Assert.assertTrue(instance.createLine(check) instanceof IntegerVariableLine);
         }
+
+        @Test
+        public void fourVarsAssignmentShoudlPass() {
+            String fourVars = "int a=1,b=2,c=3,d=5;";
+            Assert.assertTrue(instance.createLine(fourVars) instanceof IntegerVariableLine);
+        }
     }
 
 
